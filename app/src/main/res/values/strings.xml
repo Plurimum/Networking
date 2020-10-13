@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Networking</string>
+    <string name="buttonText">do hard task</string>
+    <string name="processText">I\'m doing some work</string>
+    <string name="finishText">Work is finished!</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>
