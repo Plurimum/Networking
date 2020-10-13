@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import java.net.URL
 
 class MyIntentService : IntentService("MyIntentService") {
@@ -15,13 +16,11 @@ class MyIntentService : IntentService("MyIntentService") {
     }
 
     override fun onHandleIntent(intent: Intent?) {
+        Log.d("FullScreenPicture", "Loading")
         val currentURL = intent?.getStringExtra("HighResolutionURL")
         val bitmap = BitmapFactory.decodeStream(URL(currentURL).openStream())
-        val index = intent?.extras?.get("index of HighRes") as Int
         highResBitmap = bitmap
-        //picturesList[index].HighResolutionBitmap = bitmap
-        startActivity(Intent(this, FullscreenImageActivity::class.java).putExtra(
-            "index", index
-        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        startActivity(Intent(this, FullscreenImageActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 }
