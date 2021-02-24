@@ -1,6 +1,7 @@
 package com.example.networking.activities
 
 import android.Manifest
+import android.app.Notification
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,8 +28,6 @@ class MainActivity : AppCompatActivity() {
     private var mBound: Boolean = false
 
     companion object {
-        const val ACCESS_NETWORK_STATE_PERMISSION_REQUEST_ID = 111
-        const val INTERNET_PERMISSION_REQUEST_ID = 101
         const val IMG_KEY = "IMAGE"
         const val API_KEY = "20043610-c75bd1aa1dd8579aa72763fca"
         const val API_REQUEST = "https://pixabay.com/api/?key=$API_KEY&q=sea&image_type=photo&per_page=100"
@@ -54,22 +54,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (!checkPermissionAccessNetworkState()) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_NETWORK_STATE),
-                ACCESS_NETWORK_STATE_PERMISSION_REQUEST_ID
-            )
-        }
-        if (!checkPermissionInternet()) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.INTERNET),
-                INTERNET_PERMISSION_REQUEST_ID
-            )
-        }
         if (!mBound) {
             Intent(this, LoadingContent::class.java).also { intent ->
+                startService(intent)
                 bindService(intent, connection, Context.BIND_AUTO_CREATE)
             }
         }
@@ -88,17 +75,7 @@ class MainActivity : AppCompatActivity() {
         myRecyclerView.adapter = picturesAdapter
     }
 
-    private fun checkPermissionInternet(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.INTERNET
-        ) != PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun checkPermissionAccessNetworkState(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_NETWORK_STATE
-        ) != PackageManager.PERMISSION_GRANTED
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 }

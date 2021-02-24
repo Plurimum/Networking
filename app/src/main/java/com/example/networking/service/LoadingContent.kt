@@ -1,6 +1,7 @@
 package com.example.networking.service
 
 import android.app.Service
+import android.content.ComponentName
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -43,6 +44,10 @@ class LoadingContent : Service() {
                 picturesDownloadAsyncTask.execute(urls)
             }.execute()
         }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return super.onStartCommand(intent, flags, startId)
     }
 
     fun continueStickingToData(picturesAdapter: PicturesAdapter) {
